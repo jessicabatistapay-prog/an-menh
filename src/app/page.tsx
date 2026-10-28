@@ -1,69 +1,121 @@
-import Image from "next/image";
+import Link from "next/link";
+import { BookOpen, Compass, Hash, Layers, Sparkles } from "lucide-react";
+import { ElementRing } from "@/components/app/element-ring";
+import { Section } from "@/components/app/page-header";
+import { RecentActivity } from "@/components/home/recent-activity";
+import { TodayPanel } from "@/components/home/today-panel";
+import { buttonVariants } from "@/components/ui/button";
 
-export default function Home() {
+const FEATURES = [
+  {
+    href: "/ban-menh",
+    icon: Sparkles,
+    title: "Bản mệnh và ngũ hành",
+    text: "Năm âm lịch, Can Chi, con giáp, mệnh nạp âm và cung phi từ ngày sinh dương lịch.",
+  },
+  {
+    href: "/phong-thuy",
+    icon: Compass,
+    title: "Phong thủy nhà ở",
+    text: "Đối chiếu hướng nhà với cung phi theo Bát trạch, kèm gợi ý ánh sáng, thông gió và bố trí.",
+  },
+  {
+    href: "/than-so-hoc",
+    icon: Hash,
+    title: "Thần số học",
+    text: "Số chủ đạo từ ngày sinh, hiển thị từng bước cộng để bạn tự kiểm tra.",
+  },
+  {
+    href: "/rut-the",
+    icon: Layers,
+    title: "Rút thẻ chiêm nghiệm",
+    text: "Một thông điệp, một câu hỏi và một việc nhỏ để làm hôm nay.",
+  },
+  {
+    href: "/kien-thuc",
+    icon: BookOpen,
+    title: "Kiến thức nền",
+    text: "Ngũ hành, Can Chi, nạp âm, Bát trạch là gì và chúng có giới hạn ra sao.",
+  },
+] as const;
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <>
+      <section className="grid items-center gap-6 pb-4 pt-8 md:grid-cols-[1.1fr_0.9fr] md:gap-10 md:pt-14">
+        <div className="order-2 md:order-1">
+          <h1 className="font-display text-[3.75rem] font-semibold leading-[0.95] text-[#f3e6c4] md:text-[5.5rem]">
+            An Mệnh
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-3 font-display text-2xl italic text-[#d9c38f] md:text-[1.75rem]">Hiểu mình hơn, sống hài hòa hơn</p>
+          <p className="mt-5 max-w-[34rem] leading-relaxed text-muted-foreground">
+            Tra cứu những quan niệm truyền thống về ngày sinh và nơi ở, với cách tính được giải thích rõ ràng. Dùng như một
+            điểm tựa để suy ngẫm, không phải lời phán định.
           </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link href="/ban-menh" className={buttonVariants({ size: "lg" })}>
+              Khám phá bản mệnh
+            </Link>
+            <Link href="/rut-the" className={buttonVariants({ size: "lg", variant: "outline" })}>
+              Rút một thẻ
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="order-1 mx-auto w-full max-w-[15rem] md:order-2 md:max-w-[22rem]">
+          <ElementRing animate title="Đồ hình ngũ hành: vòng ngoài là tương sinh, ngôi sao bên trong là tương khắc" />
+          <p className="mt-1 text-center text-xs text-muted-foreground">Vòng ngoài: tương sinh. Nét đứt: tương khắc.</p>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <div className="mt-8">
+        <TodayPanel />
+      </div>
+
+      <Section title="Bắt đầu từ đâu" id="tinh-nang">
+        <ul className="divide-y divide-[#2a395680] border-y border-[#2a395680]">
+          {FEATURES.map((f) => (
+            <li key={f.href}>
+              <Link href={f.href} className="group flex items-start gap-4 py-4 transition-colors hover:bg-[#15213a80] md:px-2">
+                <span className="mt-0.5 grid size-10 shrink-0 place-items-center rounded-full border border-[#d9c38f4d] text-primary group-hover:border-primary">
+                  <f.icon className="size-[1.1rem]" aria-hidden />
+                </span>
+                <span>
+                  <span className="block font-display text-[1.4rem] font-semibold leading-tight text-[#f1e3bf]">{f.title}</span>
+                  <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{f.text}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section title="Đã lưu gần đây" id="gan-day">
+        <RecentActivity />
+      </Section>
+
+      <Section title="An Mệnh giúp được gì" id="gioi-thieu">
+        <div className="grid gap-6 text-[0.95rem] leading-relaxed md:grid-cols-3">
+          <div>
+            <h3 className="font-display text-xl font-semibold text-[#f1e3bf]">Tra cứu có căn cứ</h3>
+            <p className="mt-1 text-muted-foreground">
+              Âm lịch được tính theo múi giờ Việt Nam bằng thuật toán thiên văn, bảng nạp âm và Bát trạch được ghi nguồn và
+              kiểm thử.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-display text-xl font-semibold text-[#f1e3bf]">Gợi ý để suy ngẫm</h3>
+            <p className="mt-1 text-muted-foreground">
+              Diễn giải tập trung vào điểm mạnh và điều có thể cân bằng, không gán nhãn tốt xấu cho con người.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-display text-xl font-semibold text-[#f1e3bf]">Những gì không làm</h3>
+            <p className="mt-1 text-muted-foreground">
+              Không dự đoán bệnh tật, tuổi thọ hay tai họa, không bán vật phẩm giải hạn và không thay cho tư vấn chuyên môn.
+            </p>
+          </div>
+        </div>
+      </Section>
+    </>
   );
 }

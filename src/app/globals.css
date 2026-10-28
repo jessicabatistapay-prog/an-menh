@@ -1,26 +1,175 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.75rem;
+  --background: #0d1524;
+  --foreground: #eee7d7;
+  --surface: #15213a;
+  --surface-2: #1b2945;
+  --card: #15213a;
+  --card-foreground: #eee7d7;
+  --popover: #16233d;
+  --popover-foreground: #eee7d7;
+  --primary: #d9c38f;
+  --primary-foreground: #1a1f2b;
+  --secondary: #1f2e4d;
+  --secondary-foreground: #eee7d7;
+  --muted: #1b2945;
+  --muted-foreground: #a3aec2;
+  --accent: #24355a;
+  --accent-foreground: #f3ead6;
+  --destructive: #e08a7c;
+  --destructive-foreground: #1a1f2b;
+  --border: #2a3956;
+  --input: #34476a;
+  --ring: #e7d3a2;
+  --success: #9cc7a4;
+  --el-kim: #d7dbe2;
+  --el-moc: #8fbf8a;
+  --el-thuy: #7fa8d6;
+  --el-hoa: #e3957c;
+  --el-tho: #cfae72;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-el-kim: var(--el-kim);
+  --color-el-moc: var(--el-moc);
+  --color-el-thuy: var(--el-thuy);
+  --color-el-hoa: var(--el-hoa);
+  --color-el-tho: var(--el-tho);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image:
+      radial-gradient(120% 60% at 50% -10%, #1c2c4d 0%, transparent 60%),
+      linear-gradient(180deg, #0d1524 0%, #0b1220 100%);
+    background-attachment: fixed;
+    min-height: 100dvh;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: #d9c38f55;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+    font-feature-settings: "liga", "lnum";
+    font-variant-numeric: lining-nums;
+  }
+  .prose-vi p + p {
+    margin-top: 0.75rem;
+  }
+  .hairline {
+    background: linear-gradient(90deg, transparent, #d9c38f66, transparent);
+    height: 1px;
+  }
+}
+
+/* Lật thẻ */
+.card-flip {
+  perspective: 1200px;
+}
+.card-flip-inner {
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.card-flip-inner[data-flipped="true"] {
+  transform: rotateY(180deg);
+}
+.card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.card-back-face {
+  transform: rotateY(180deg);
+}
+
+@keyframes ring-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.ring-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ring-draw 2.4s ease-out 0.2s forwards;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.8; }
+}
+.twinkle {
+  animation: twinkle 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ring-draw {
+    stroke-dashoffset: 0;
+  }
+  .card-flip-inner[data-flipped="true"] {
+    transform: none;
+  }
+  .card-flip-inner[data-flipped="true"] .card-front-face {
+    visibility: hidden;
+  }
+  .card-flip-inner[data-flipped="true"] .card-back-face {
+    transform: none;
+  }
 }
