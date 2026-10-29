@@ -10,7 +10,7 @@ import { parseISODate } from "@/lib/core/date";
 
 export const STORAGE_KEY = "an-menh:data";
 export const CORRUPT_BACKUP_KEY = "an-menh:data:hong";
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 const isoDate = z.string().refine((v) => parseISODate(v).ok, "Ngày không hợp lệ");
 const gender = z.enum(["nam", "nu"]).nullable();
@@ -49,6 +49,17 @@ export const historyEntrySchema = z.discriminatedUnion("kind", [
   }),
   z.object({ ...base, kind: z.literal("than-so"), birthDate: isoDate }),
   z.object({ ...base, kind: z.literal("rut-the"), cardId: z.string().min(1) }),
+  // Thêm từ phiên bản 2
+  z.object({
+    ...base,
+    kind: z.literal("hop-tuoi"),
+    nameA: z.string().max(60),
+    birthDateA: isoDate,
+    genderA: gender,
+    nameB: z.string().max(60),
+    birthDateB: isoDate,
+    genderB: gender,
+  }),
 ]);
 
 export type HistoryEntry = z.infer<typeof historyEntrySchema>;

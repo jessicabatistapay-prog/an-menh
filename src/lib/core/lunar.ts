@@ -175,16 +175,69 @@ export function solarToLunar(date: CalendarDate, tz: number = VIETNAM_TIMEZONE_O
 }
 
 /** Ngày Tết Nguyên đán (mùng 1 tháng Giêng) của năm âm lịch `lunarYear`, theo dương lịch. */
+const tetCache = new Map<string, CalendarDate>();
+
 export function lunarNewYearDate(lunarYear: number, tz: number = VIETNAM_TIMEZONE_OFFSET): CalendarDate {
+  const key = `${lunarYear}@${tz}`;
+  const cached = tetCache.get(key);
+  if (cached) return { ...cached };
   // Tết luôn rơi trong khoảng 20/01 – 21/02 dương lịch. Tìm ngày đầu tiên có âm lịch 1/1 (không nhuận).
   const start = julianDayNumber({ year: lunarYear, month: 1, day: 15 });
   for (let jdn = start; jdn < start + 45; jdn++) {
     const d = fromJulianDayNumber(jdn);
     if (!isWithinSupportedRange(d)) continue;
     const l = solarToLunar(d, tz);
-    if (l.year === lunarYear && l.month === 1 && l.day === 1 && !l.isLeapMonth) return d;
+    if (l.year === lunarYear && l.month === 1 && l.day === 1 && !l.isLeapMonth) {
+      tetCache.set(key, d);
+      return { ...d };
+    }
   }
   throw new UnsupportedDateError(`Không xác định được Tết năm ${lunarYear} trong phạm vi hỗ trợ.`);
+}
+
+export interface LunarDateInput {
+  year: number;
+  month: number;
+  day: number;
+  isLeapMonth: boolean;
+}
+
+/**
+ * Đổi ngày âm lịch Việt Nam (UTC+7) sang dương lịch.
+ * Trả về null nếu ngày âm không tồn tại (ví dụ ngày 30 của tháng thiếu, tháng nhuận không có
+ * trong năm đó) hoặc nằm ngoài phạm vi hỗ trợ. Kết quả luôn được kiểm tra ngược bằng solarToLunar.
+ */
+export function lunarToSolar(input: LunarDateInput, tz: number = VIETNAM_TIMEZONE_OFFSET): CalendarDate | null {
+  const { year, month, day, isLeapMonth } = input;
+  if (![year, month, day].every(Number.isInteger)) return null;
+  if (month < 1 || month > 12 || day < 1 || day > 30) return null;
+  let tet: CalendarDate;
+  try {
+    tet = lunarNewYearDate(year, tz);
+  } catch {
+    return null;
+  }
+  // Đi lần lượt từng tháng âm kể từ Tết cho đến khi gặp tháng cần tìm.
+  let start = julianDayNumber(tet);
+  for (let i = 0; i < 14; i++) {
+    const d = fromJulianDayNumber(start);
+    if (!isWithinSupportedRange(d)) return null;
+    const l = solarToLunar(d, tz);
+    if (l.year !== year) return null;
+    if (l.month === month && l.isLeapMonth === isLeapMonth) {
+      if (day > l.monthLength) return null;
+      const result = fromJulianDayNumber(start + day - 1);
+      return isWithinSupportedRange(result) ? result : null;
+    }
+    start += l.monthLength;
+  }
+  return null;
+}
+
+/** Tháng nhuận của năm âm lịch (1..12), hoặc null nếu năm không nhuận. */
+export function leapMonthOfYear(year: number, tz: number = VIETNAM_TIMEZONE_OFFSET): number | null {
+  for (let m = 1; m <= 12; m++) if (lunarToSolar({ year, month: m, day: 1, isLeapMonth: true }, tz)) return m;
+  return null;
 }
 
 const LUNAR_MONTH_NAMES = [

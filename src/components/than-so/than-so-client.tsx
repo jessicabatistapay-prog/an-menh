@@ -13,6 +13,7 @@ import { type CalendarDate, formatVietnameseDate, parseISODate } from "@/lib/cor
 import { LIFE_PATH_MEANINGS, type LifePathResult, lifePathNumber } from "@/lib/core/numerology";
 import { type ThanSoForm, thanSoSchema } from "@/lib/forms";
 import { formatSavedAt } from "@/lib/history";
+import { PersonalYearSection } from "./personal-year";
 import type { AppData } from "@/lib/storage/schema";
 
 interface Shown {
@@ -154,6 +155,7 @@ function ThanSoView({ initial }: { initial: Initial }) {
             ))}
           </ul>
         </Section>
+        <PersonalYearSection birth={shown.birth} />
         <Note className="mt-8">
           Thần số học là một hệ thống biểu tượng hiện đại, không có cơ sở khoa học. Diễn giải do An Mệnh biên soạn để gợi mở suy ngẫm, không
           mô tả chắc chắn tính cách hay tương lai.

@@ -7,6 +7,7 @@ import "@fontsource/cormorant-garamond/600.css";
 import "@fontsource/cormorant-garamond/500-italic.css";
 import "./globals.css";
 import { BottomNav } from "@/components/app/bottom-nav";
+import { MusicToggle } from "@/components/app/music-toggle";
 import { ServiceWorkerRegister } from "@/components/app/sw-register";
 import { SiteFooter } from "@/components/app/site-footer";
 import { SiteHeader } from "@/components/app/site-header";
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <SiteFooter />
         <BottomNav />
+        <MusicToggle />
         <ServiceWorkerRegister />
       </body>
     </html>

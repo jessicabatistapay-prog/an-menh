@@ -41,8 +41,14 @@ export interface LoadResult {
   droppedCount: number;
 }
 
-/** Chuyển đổi từ các phiên bản cũ. Hiện chỉ có phiên bản 1 nên chưa có bước nào. */
-const MIGRATIONS: Record<number, (input: Record<string, unknown>) => Record<string, unknown>> = {};
+/**
+ * Chuyển đổi từ các phiên bản cũ: MIGRATIONS[n] đổi dữ liệu phiên bản n sang n + 1.
+ * 1 → 2: thêm loại lịch sử "hop-tuoi"; dữ liệu cũ giữ nguyên cấu trúc.
+ * (Nâng phiên bản để bản app cũ hơn mở dữ liệu mới ở chế độ chỉ đọc, không vô tình xóa mục "hop-tuoi".)
+ */
+const MIGRATIONS: Record<number, (input: Record<string, unknown>) => Record<string, unknown>> = {
+  1: (input) => ({ ...input, version: 2 }),
+};
 
 export function parseStoredData(raw: string | null): LoadResult {
   if (raw === null || raw === "") return { data: emptyData(), status: "empty", droppedCount: 0 };

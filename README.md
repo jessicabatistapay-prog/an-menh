@@ -12,11 +12,17 @@ Web app tiếng Việt tra cứu bản mệnh, ngũ hành, phong thủy Bát tr�
 | Trang chủ | `/` | Ngày dương và âm lịch hôm nay (giờ Việt Nam), lối vào các tính năng, hồ sơ và kết quả đã lưu gần đây |
 | Bản mệnh | `/ban-menh` | Năm âm lịch, Can Chi, con giáp, nạp âm, quan hệ sinh khắc, màu tham khảo, cung phi (khi có giới tính) |
 | Phong thủy | `/phong-thuy` | Cung phi, nhóm Đông/Tây tứ mệnh, sao của hướng nhà, trạch của nhà, sơ đồ 8 hướng, gợi ý cho phòng khách/phòng ngủ/góc làm việc |
-| Thần số học | `/than-so-hoc` | Số chủ đạo với từng bước cộng, điểm mạnh, xu hướng cần cân bằng, câu hỏi suy ngẫm |
+| Thần số học | `/than-so-hoc` | Số chủ đạo với từng bước cộng, điểm mạnh, xu hướng cần cân bằng, câu hỏi suy ngẫm, năm cá nhân |
+| Lịch âm dương | `/lich` | Lịch tháng có ngày âm, Can Chi ngày/tháng/năm, 24 tiết khí, ngày lễ; đổi ngày dương ↔ âm |
+| Xem tuổi | `/hop-tuoi` | Tam hợp, lục hợp, lục xung, lục hại, can hợp, sinh khắc nạp âm, nhóm Bát trạch của hai người – không chấm điểm |
 | Rút thẻ | `/rut-the` | 24 thẻ tự biên soạn, hiệu ứng lật thẻ (tắt khi `prefers-reduced-motion`), lưu vào lịch sử |
 | Hồ sơ | `/ho-so` | Thêm, sửa, xóa hồ sơ; xem lại/xóa từng mục lịch sử; xóa toàn bộ dữ liệu |
 | Kiến thức | `/kien-thuc` | Ngũ hành, Can Chi, nạp âm và cung phi, Bát trạch, thần số học, giới hạn |
 | Phương pháp | `/phuong-phap` | Thuật toán, bảng tra, nguồn, phạm vi và kết quả đối chiếu |
+
+Nhạc nền: tạo trực tiếp bằng Web Audio API theo thang âm ngũ cung (`src/lib/audio/ambient.ts`), không có file nhạc và
+không vướng bản quyền. Mặc định bật, nhưng theo chính sách tự phát của trình duyệt, nhạc chỉ bắt đầu sau lần chạm hoặc
+nhấn phím đầu tiên. Nút ở góc màn hình để bật/tắt; lựa chọn lưu ở khóa `an-menh:nhac`.
 
 Kết quả đã lưu được mở lại bằng `?muc=<id>`, hồ sơ bằng `?ho-so=<id>`. Đường dẫn chỉ chứa id, không chứa ngày sinh.
 
@@ -132,7 +138,15 @@ k = (năm mod 9 + 4) mod 9; 0 → 9; số 5: nam → Khôn, nữ → Cấn.
 
 **Thần số học.** Cộng mọi chữ số của DD MM YYYY; giữ 11, 22, 33 (kể cả ở bước trung gian); còn lại rút gọn về 1–9.
 
-**Lưu trữ.** Khóa `an-menh:data`, lược đồ phiên bản 1 kiểm tra bằng Zod. JSON hỏng → sao lưu sang `an-menh:data:hong`
+**Đổi âm sang dương.** Đi từ Tết của năm âm, cộng dần độ dài từng tháng, rồi kiểm tra ngược bằng phép đổi dương sang âm.
+
+**Tiết khí.** Ngày (giờ VN) Mặt Trời qua mốc kinh độ bội số 15°, Xuân phân = 0°.
+
+**Xem tuổi.** Tam hợp (chi mod 4), lục hợp (tổng ≡ 1 mod 12), lục xung (cách 6), lục hại (tổng ≡ 7 mod 12), can hợp (cách 5).
+
+**Năm cá nhân.** Cộng chữ số DD MM + năm đang xét, rút gọn về 1–9 (không giữ 11/22/33).
+
+**Lưu trữ.** Khóa `an-menh:data`, lược đồ phiên bản 2 (tự chuyển từ phiên bản 1) kiểm tra bằng Zod. JSON hỏng → sao lưu sang `an-menh:data:hong`
 rồi khởi tạo lại; mục lỗi bị bỏ qua từng mục; dữ liệu phiên bản mới hơn chỉ đọc, không ghi đè; LocalStorage bị chặn →
 vẫn xem được kết quả, nút lưu báo lỗi rõ ràng. Chỉ lưu khi người dùng chọn lưu, và chỉ lưu đầu vào (kết quả được tính lại).
 
@@ -148,6 +162,10 @@ vẫn xem được kết quả, nút lưu báo lỗi rõ ràng. Chỉ lưu khi n
 - Thần số học: số 11/22/33, dừng ở bước trung gian, bước tính, ngày nhuận.
 - Lưu trữ: JSON hỏng, thiếu phiên bản, phiên bản mới hơn, mục lỗi, trùng id, LocalStorage bị chặn, hết dung lượng.
 - Bộ thẻ: đủ 24 thẻ, không trùng, nội dung đầy đủ.
+- Đổi âm ↔ dương khớp ngược trên mọi ngày 1900–2100; ngày âm không tồn tại bị từ chối; tháng nhuận 2020/2023/2025.
+- Tiết khí: các mốc Xuân phân, Hạ chí, Thu phân, Đông chí, Lập xuân đã biết; mỗi năm 1901–2099 đủ 24 tiết đúng thứ tự,
+  Đông chí luôn thuộc tháng 11 âm.
+- Ngày lễ, quan hệ tuổi (mỗi chi đủ 2 tam hợp/1 lục hợp/1 xung/1 hại), năm cá nhân, chuyển dữ liệu v1 → v2.
 
 Kết quả đối chiếu âm lịch (73.384 ngày): khớp `amlich` ở UTC+7 trừ 2 ngày mà `amlich` trả về "ngày 0"
 (07/05/2054, 09/04/2062); khác `lunar-javascript` ở UTC+8 tại 150 ngày thuộc 5 giai đoạn (1914, 1916, 1920, 2057, 2097)
@@ -159,6 +177,6 @@ khi sóc hoặc trung khí rơi sát nửa đêm.
   lịch tính bằng mô hình chính xác hơn.
 - Lịch âm Việt Nam trước 1968 (miền Nam đến 1975) thường dùng UTC+8. App dùng UTC+7 thống nhất và hiển thị lưu ý khi
   hai cách tính khác nhau cho ngày sinh trước 1976.
-- Chưa có: lá số tử vi, chỉ số thần số học theo tên, xem ngày tốt xấu, đăng nhập/đồng bộ, la bàn cảm biến.
+- Chưa có: lá số tử vi, chỉ số thần số học theo tên, xem ngày tốt xấu, giờ hoàng đạo, đăng nhập/đồng bộ, la bàn cảm biến.
 - Dữ liệu chỉ nằm trên trình duyệt hiện tại; xóa dữ liệu trình duyệt sẽ mất hồ sơ và lịch sử.
 - Diễn giải, thẻ chiêm nghiệm và gợi ý không gian do An Mệnh tự biên soạn.

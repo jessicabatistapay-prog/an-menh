@@ -68,3 +68,15 @@ export const SPACE_LABELS: Record<(typeof SPACE_TYPES)[number], string> = {
 };
 
 export const GENDER_LABELS = { nam: "Nam", nu: "Nữ" } as const;
+
+const optionalGender = z.enum(["nam", "nu"]).nullable();
+
+export const hopTuoiSchema = z.object({
+  nameA: nameField,
+  birthDateA: birthDateField,
+  genderA: optionalGender,
+  nameB: nameField,
+  birthDateB: birthDateField,
+  genderB: optionalGender,
+});
+export type HopTuoiForm = z.infer<typeof hopTuoiSchema>;

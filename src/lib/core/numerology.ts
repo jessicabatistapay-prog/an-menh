@@ -156,3 +156,50 @@ export const LIFE_PATH_MEANINGS: Record<number, LifePathMeaning> = {
     reflection: ["Ai đang nâng đỡ mình?", "Sự giúp đỡ nào thực sự xuất phát từ mong muốn của mình?"],
   },
 };
+
+/**
+ * NĂM CÁ NHÂN (Personal Year).
+ * Quy tắc: cộng các chữ số của ngày sinh (DD), tháng sinh (MM) và năm đang xét (YYYY),
+ * rồi rút gọn về một chữ số 1–9. Năm cá nhân KHÔNG giữ số đặc biệt 11/22/33 – theo cách làm phổ biến,
+ * vì năm cá nhân mô tả chu kỳ 9 năm.
+ */
+export interface PersonalYearResult {
+  year: number;
+  number: number;
+  steps: ReductionStep[];
+}
+
+export function personalYear(birth: CalendarDate, year: number): PersonalYearResult {
+  if (!isValidCalendarDate(birth)) throw new RangeError("Ngày sinh không hợp lệ.");
+  if (!Number.isInteger(year) || year < 1 || year > 9999) throw new RangeError("Năm không hợp lệ.");
+  const text = String(birth.day).padStart(2, "0") + String(birth.month).padStart(2, "0") + String(year).padStart(4, "0");
+  const digits = text.split("").map(Number);
+  const total = digits.reduce((s, d) => s + d, 0);
+  const steps: ReductionStep[] = [{ expression: digits.join(" + "), result: total }];
+  let value = total;
+  while (value > 9) {
+    const next = digitSum(value);
+    steps.push({ expression: String(value).split("").join(" + "), result: next });
+    value = next;
+  }
+  return { year, number: value, steps };
+}
+
+export interface PersonalYearMeaning {
+  theme: string;
+  focus: string;
+  suggestion: string;
+}
+
+/** Chủ đề năm cá nhân do An Mệnh tự biên soạn, mang tính gợi mở. */
+export const PERSONAL_YEAR_MEANINGS: Record<number, PersonalYearMeaning> = {
+  1: { theme: "Khởi đầu", focus: "Bắt đầu điều mới, đặt nền cho chu kỳ 9 năm tiếp theo.", suggestion: "Chọn một mục tiêu và bắt tay vào bước đầu tiên." },
+  2: { theme: "Kết nối", focus: "Hợp tác, kiên nhẫn và chăm sóc các mối quan hệ.", suggestion: "Dành thời gian lắng nghe người thân và đồng nghiệp." },
+  3: { theme: "Biểu đạt", focus: "Sáng tạo, giao lưu và chia sẻ ý tưởng.", suggestion: "Thử một hoạt động sáng tạo hoặc kể câu chuyện của mình." },
+  4: { theme: "Xây nền", focus: "Kỷ luật, sắp xếp và làm việc bền bỉ.", suggestion: "Lập một thói quen nhỏ và giữ nó đều đặn." },
+  5: { theme: "Thay đổi", focus: "Trải nghiệm mới, linh hoạt và tự do.", suggestion: "Đón nhận một thay đổi với tâm thế tò mò." },
+  6: { theme: "Chăm sóc", focus: "Gia đình, trách nhiệm và sự hài hòa trong nhà.", suggestion: "Làm mới không gian sống hoặc một thói quen gia đình." },
+  7: { theme: "Chiêm nghiệm", focus: "Học hỏi, nghỉ ngơi và nhìn vào bên trong.", suggestion: "Dành thời gian đọc, học hoặc ở một mình để suy ngẫm." },
+  8: { theme: "Thành quả", focus: "Mục tiêu, tổ chức và quản lý nguồn lực.", suggestion: "Rà soát mục tiêu và ghi nhận những gì đã đạt được." },
+  9: { theme: "Khép lại", focus: "Hoàn tất, buông bỏ và chuẩn bị cho chu kỳ mới.", suggestion: "Hoàn thành việc còn dang dở và cảm ơn điều đã qua." },
+};

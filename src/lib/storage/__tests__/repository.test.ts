@@ -157,3 +157,28 @@ describe("Repository", () => {
     expect(() => repo.addProfile({ name: "A", birthDate: "2023-02-29", gender: null })).toThrow();
   });
 });
+
+describe("Chuyển đổi phiên bản dữ liệu", () => {
+  it("dữ liệu phiên bản 1 được đọc bình thường và ghi lại thành phiên bản 2", () => {
+    const mem = new MemoryStorage();
+    mem.setItem(STORAGE_KEY, JSON.stringify({ version: 1, profiles: [validProfile], history: [] }));
+    const repo = new Repository(mem);
+    expect(repo.getSnapshot().status).toBe("ok");
+    expect(repo.getSnapshot().data.profiles).toHaveLength(1);
+    repo.addHistory({
+      kind: "hop-tuoi",
+      nameA: "A",
+      birthDateA: "1990-06-15",
+      genderA: null,
+      nameB: "",
+      birthDateB: "1994-08-20",
+      genderB: "nu",
+      profileId: null,
+      label: "Xem tuổi",
+    });
+    const stored = JSON.parse(mem.getItem(STORAGE_KEY)!);
+    expect(stored.version).toBe(2);
+    expect(stored.history[0].kind).toBe("hop-tuoi");
+    expect(stored.profiles).toHaveLength(1);
+  });
+});

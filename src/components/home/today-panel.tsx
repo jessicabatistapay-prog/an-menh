@@ -3,7 +3,11 @@
 import { useSyncExternalStore } from "react";
 import { canChiOfDay, canChiOfLunarMonth, canChiOfLunarYear, zodiacOf } from "@/lib/core/canchi";
 import { type CalendarDate, formatVietnameseDate, todayInVietnam, weekdayVi } from "@/lib/core/date";
+import Link from "next/link";
+import { fromJulianDayNumber, julianDayNumber, isWithinSupportedRange } from "@/lib/core/date";
+import { holidaysOf } from "@/lib/core/holidays";
 import { lunarMonthName, solarToLunar } from "@/lib/core/lunar";
+import { solarTermOf } from "@/lib/core/solarterms";
 
 // Ngày hiện tại chỉ đọc trên trình duyệt; cập nhật mỗi phút để qua nửa đêm vẫn đúng.
 let cached: { key: string; value: CalendarDate } | null = null;
@@ -35,6 +39,8 @@ export function TodayPanel() {
   const year = canChiOfLunarYear(lunar.year);
   const month = lunar.isLeapMonth ? null : canChiOfLunarMonth(lunar.year, lunar.month);
   const day = canChiOfDay(today);
+  const term = solarTermOf(today);
+  const upcoming = upcomingEvents(today, 3);
 
   return (
     <section aria-labelledby="hom-nay" className="rounded-2xl border border-border bg-[#15213acc] p-5 md:p-6">
@@ -62,7 +68,45 @@ export function TodayPanel() {
         <dd>{day.name}</dd>
         <dt className="text-muted-foreground">Tháng</dt>
         <dd>{month ? month.name : "Tháng nhuận (không tính Can Chi riêng)"}</dd>
+        <dt className="text-muted-foreground">Tiết khí</dt>
+        <dd>
+          {term.name}
+          {term.startsToday ? " (bắt đầu hôm nay)" : ""}
+        </dd>
       </dl>
+      {upcoming.length > 0 && (
+        <div className="mt-4 border-t border-[#2a395680] pt-4">
+          <p className="text-sm text-muted-foreground">Sắp tới</p>
+          <ul className="mt-1.5 grid gap-1 text-sm">
+            {upcoming.map((u) => (
+              <li key={u.key} className="flex justify-between gap-4">
+                <span>{u.name}</span>
+                <span className="shrink-0 tabular-nums text-muted-foreground">
+                  {formatVietnameseDate(u.date).slice(0, 5)}, {u.days === 1 ? "ngày mai" : `còn ${u.days} ngày`}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <Link href="/lich" className="mt-4 inline-block text-sm text-primary underline-offset-4 hover:underline">
+        Mở lịch âm dương
+      </Link>
     </section>
   );
+}
+
+function upcomingEvents(today: CalendarDate, limit: number) {
+  const start = julianDayNumber(today);
+  const out: { key: string; name: string; date: CalendarDate; days: number }[] = [];
+  for (let i = 1; i <= 60 && out.length < limit; i++) {
+    const d = fromJulianDayNumber(start + i);
+    if (!isWithinSupportedRange(d)) break;
+    const l = solarToLunar(d);
+    const names = holidaysOf(d, l).map((h) => h.name);
+    const t = solarTermOf(d);
+    if (t.startsToday) names.push(`Tiết ${t.name}`);
+    for (const name of names) if (out.length < limit) out.push({ key: `${i}-${name}`, name, date: d, days: i });
+  }
+  return out;
 }

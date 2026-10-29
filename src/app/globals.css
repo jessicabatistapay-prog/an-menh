@@ -177,3 +177,13 @@
     transform: none;
   }
 }
+
+/* Biểu tượng nhạc đang phát */
+@keyframes music-bar {
+  0%, 100% { height: 30%; }
+  50% { height: 100%; }
+}
+.music-bar {
+  height: 60%;
+  animation: music-bar 1.1s ease-in-out infinite;
+}

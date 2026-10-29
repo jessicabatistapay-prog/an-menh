@@ -9,6 +9,7 @@ export const HISTORY_KIND_LABELS: Record<HistoryEntry["kind"], string> = {
   "phong-thuy": "Phong thủy",
   "than-so": "Thần số học",
   "rut-the": "Rút thẻ",
+  "hop-tuoi": "Xem tuổi",
 };
 
 const HISTORY_ROUTES: Record<HistoryEntry["kind"], string> = {
@@ -16,6 +17,7 @@ const HISTORY_ROUTES: Record<HistoryEntry["kind"], string> = {
   "phong-thuy": "/phong-thuy",
   "than-so": "/than-so-hoc",
   "rut-the": "/rut-the",
+  "hop-tuoi": "/hop-tuoi",
 };
 
 export function historyHref(entry: HistoryEntry): string {
@@ -37,6 +39,8 @@ export function describeHistory(entry: HistoryEntry): string {
       return `Nhà hướng ${DIRECTION_NAMES[entry.facing as Direction]}, ${SPACE_LABELS[entry.space].toLowerCase()}`;
     case "rut-the":
       return getCardById(entry.cardId)?.name ?? "Thẻ không còn trong bộ thẻ";
+    case "hop-tuoi":
+      return `${entry.nameA || "Người thứ nhất"} (${dateText(entry.birthDateA)}) và ${entry.nameB || "Người thứ hai"} (${dateText(entry.birthDateB)})`;
   }
 }
 

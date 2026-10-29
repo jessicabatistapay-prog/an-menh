@@ -14,6 +14,8 @@ const TOC = [
   ["nap-am-cung-phi", "Nạp âm và cung phi"],
   ["bat-trach", "Bát trạch"],
   ["than-so-hoc", "Thần số học"],
+  ["tiet-khi", "Tiết khí"],
+  ["quan-he-tuoi", "Quan hệ tuổi"],
   ["gioi-han", "Giới hạn"],
 ] as const;
 
@@ -106,6 +108,29 @@ export default function KienThucPage() {
               Phương pháp và nguồn
             </Link>
             .
+          </p>
+        </Section>
+
+        <Section title="Tiết khí" id="tiet-khi">
+          <p>
+            Âm lịch Việt Nam thực chất là âm dương lịch: tháng theo Mặt Trăng, còn mùa màng theo 24 tiết khí của Mặt Trời. Mỗi tiết ứng với
+            một đoạn 15° trên đường đi biểu kiến của Mặt Trời, bắt đầu từ Xuân phân. Các tiết như Lập xuân, Thanh minh, Hạ chí, Đông chí
+            gắn với nông lịch và phong tục, ví dụ tục tảo mộ vào tiết Thanh minh.
+          </p>
+          <p>
+            Tiết khí cũng quyết định tháng nhuận: trong năm âm lịch có 13 tháng, tháng đầu tiên không chứa trung khí (các tiết ở mốc 0°, 30°, 60°…) là tháng nhuận.
+          </p>
+        </Section>
+
+        <Section title="Quan hệ tuổi" id="quan-he-tuoi">
+          <p>
+            Khi “xem tuổi”, người ta thường xét quan hệ giữa hai Địa Chi của năm sinh. Tam hợp là ba chi cách đều nhau trên vòng 12 (ví dụ
+            Thân, Tý, Thìn); lục hợp là sáu cặp chi kết đôi (Tý – Sửu, Dần – Hợi…); lục xung là hai chi đối nhau (Tý – Ngọ); lục hại là sáu cặp
+            được xem là dễ hiểu lầm (Tý – Mùi…). Ngoài ra còn xét Thiên Can hợp (Giáp – Kỷ, Ất – Canh…) và sinh khắc giữa hai hành nạp âm.
+          </p>
+          <p>
+            Đây là cách luận của mệnh lý cổ, mỗi trường phái nhấn mạnh khác nhau. An Mệnh chỉ liệt kê quan hệ, không cộng điểm và không kết
+            luận hai người hợp hay không.
           </p>
         </Section>
 

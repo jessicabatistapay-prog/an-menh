@@ -178,7 +178,7 @@ export function HoSoClient() {
         ) : (
           <>
             <div role="group" aria-label="Lọc lịch sử" className="mb-4 flex flex-wrap gap-2">
-              {(["all", "ban-menh", "phong-thuy", "than-so", "rut-the"] as const)
+              {(["all", "ban-menh", "phong-thuy", "than-so", "rut-the", "hop-tuoi"] as const)
                 .filter((k) => k === "all" || kindsPresent.has(k))
                 .map((k) => (
                   <button

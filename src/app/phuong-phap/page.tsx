@@ -101,6 +101,57 @@ export default function PhuongPhapPage() {
         </dl>
       </Section>
 
+      <Section title="Lịch âm dương và tiết khí" id="lich">
+        <dl>
+          <Row label="Đổi âm sang dương">
+            Đi từ Tết của năm âm lịch, cộng dần độ dài từng tháng (tính bằng cùng bộ âm lịch ở trên) cho đến tháng cần tìm. Mỗi kết quả được
+            đổi ngược lại để kiểm tra; ngày âm không tồn tại (ngày 30 của tháng thiếu, tháng nhuận không có trong năm) được báo lỗi. Kiểm thử
+            đổi qua lại khớp nhau trên mọi ngày từ 31/01/1900 đến 31/12/2100.
+          </Row>
+          <Row label="Tiết khí">
+            Ngày bắt đầu tiết là ngày (giờ Việt Nam) Mặt Trời đi qua mốc kinh độ bội số của 15°, dùng cùng công thức kinh độ Mặt Trời của
+            Meeus. Kiểm thử: mỗi năm 1901–2099 có đủ 24 tiết đúng thứ tự, Đông chí luôn rơi vào tháng 11 âm lịch, và một số ngày Xuân phân,
+            Hạ chí, Thu phân, Đông chí, Lập xuân đã biết. Vì công thức là gần đúng, tiết bắt đầu sát nửa đêm có thể lệch một ngày.
+          </Row>
+          <Row label="Ngày lễ">
+            Các ngày lễ, Tết truyền thống theo âm lịch (không áp dụng cho tháng nhuận) và một số ngày lễ, kỷ niệm theo dương lịch. Đây không
+            phải lịch nghỉ lễ chính thức. Lịch không đánh giá ngày tốt hay xấu.
+          </Row>
+        </dl>
+      </Section>
+
+      <Section title="Xem tuổi hai người" id="hop-tuoi">
+        <dl>
+          <Row label="Địa Chi">
+            Tam hợp (chi cùng số dư khi chia 4: Thân–Tý–Thìn, Tỵ–Dậu–Sửu, Dần–Ngọ–Tuất, Hợi–Mão–Mùi), lục hợp (Tý–Sửu, Dần–Hợi, Mão–Tuất,
+            Thìn–Dậu, Tỵ–Thân, Ngọ–Mùi), lục xung (hai chi đối nhau), lục hại (Tý–Mùi, Sửu–Ngọ, Dần–Tỵ, Mão–Thìn, Thân–Hợi, Dậu–Tuất), theo cách
+            luận phổ biến trong các sách mệnh lý như Tam Mệnh Thông Hội. Kiểm thử: mỗi chi có đúng 2 tam hợp, 1 lục hợp, 1 lục xung, 1 lục hại.
+          </Row>
+          <Row label="Thiên Can và nạp âm">
+            Can hợp: Giáp–Kỷ, Ất–Canh, Bính–Tân, Đinh–Nhâm, Mậu–Quý. Sinh khắc giữa hai hành nạp âm theo vòng ngũ hành.
+          </Row>
+          <Row label="Không chấm điểm">
+            Ứng dụng không cộng điểm hay đưa ra phần trăm “hợp tuổi”, vì không có phương pháp minh bạch nào để quy đổi các quan hệ này thành
+            con số.
+          </Row>
+        </dl>
+      </Section>
+
+      <Section title="Năm cá nhân" id="nam-ca-nhan">
+        <p className="leading-relaxed">
+          Cộng các chữ số của ngày sinh, tháng sinh và năm đang xét, rút gọn về một chữ số từ 1 đến 9; năm cá nhân không giữ số đặc biệt.
+          Chủ đề của từng năm do An Mệnh tự biên soạn theo hướng gợi mở.
+        </p>
+      </Section>
+
+      <Section title="Nhạc nền" id="nhac-nen">
+        <p className="leading-relaxed">
+          Nhạc nền không phải bản thu âm có sẵn: trình duyệt tự tạo âm thanh theo thang âm ngũ cung (năm nốt), với tiếng gảy mô phỏng dây đàn
+          và một nốt nền trầm, nên mỗi lần nghe một khác và không vướng bản quyền. Theo quy định của trình duyệt, nhạc chỉ bắt đầu sau lần chạm
+          hoặc nhấn phím đầu tiên trên trang; nút nhạc ở góc màn hình dùng để bật hoặc tắt, và lựa chọn được ghi nhớ trên trình duyệt này.
+        </p>
+      </Section>
+
       <Section title="Thẻ chiêm nghiệm" id="the">
         <p className="leading-relaxed">
           24 thẻ do An Mệnh tự biên soạn, không có nguồn gốc lịch sử và không phải hệ thống bói toán cổ truyền. Thẻ được chọn bằng hàm ngẫu

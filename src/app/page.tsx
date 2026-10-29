@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, Compass, Hash, Layers, Sparkles } from "lucide-react";
+import { BookOpen, CalendarDays, Compass, Hash, HeartHandshake, Layers, Sparkles } from "lucide-react";
 import { ElementRing } from "@/components/app/element-ring";
 import { Section } from "@/components/app/page-header";
 import { RecentActivity } from "@/components/home/recent-activity";
@@ -20,10 +20,22 @@ const FEATURES = [
     text: "Đối chiếu hướng nhà với cung phi theo Bát trạch, kèm gợi ý ánh sáng, thông gió và bố trí.",
   },
   {
+    href: "/lich",
+    icon: CalendarDays,
+    title: "Lịch âm dương",
+    text: "Lịch tháng có ngày âm, Can Chi, tiết khí và ngày lễ; đổi ngày qua lại hai chiều.",
+  },
+  {
+    href: "/hop-tuoi",
+    icon: HeartHandshake,
+    title: "Xem tuổi hai người",
+    text: "Tam hợp, lục hợp, xung, hại và sinh khắc nạp âm giữa hai tuổi, không chấm điểm.",
+  },
+  {
     href: "/than-so-hoc",
     icon: Hash,
     title: "Thần số học",
-    text: "Số chủ đạo từ ngày sinh, hiển thị từng bước cộng để bạn tự kiểm tra.",
+    text: "Số chủ đạo và năm cá nhân từ ngày sinh, hiển thị từng bước cộng để bạn tự kiểm tra.",
   },
   {
     href: "/rut-the",
