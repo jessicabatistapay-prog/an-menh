@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "./element-ring";
-import { MORE_NAV, PRIMARY_NAV, isActive } from "./nav-config";
+import { MORE_GROUPS, PRIMARY_NAV, isActive } from "./nav-config";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -49,13 +49,19 @@ export function SiteHeader() {
             <span>Thêm</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {MORE_NAV.map((item) => (
-              <DropdownMenuItem key={item.href} asChild>
-                <Link href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined}>
-                  <item.icon aria-hidden />
-                  {item.label}
-                </Link>
-              </DropdownMenuItem>
+            {MORE_GROUPS.map((g, gi) => (
+              <div key={g.label} role="group" aria-label={g.label}>
+                {gi > 0 && <DropdownMenuSeparator />}
+                <p className="px-3 pb-1 pt-2 text-xs text-muted-foreground">{g.label}</p>
+                {g.items.map((item) => (
+                  <DropdownMenuItem key={item.href} asChild>
+                    <Link href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined}>
+                      <item.icon aria-hidden />
+                      {item.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </div>
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>

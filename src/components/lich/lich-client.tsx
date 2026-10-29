@@ -25,6 +25,7 @@ import {
   weekdayVi,
 } from "@/lib/core/date";
 import { holidaysOf } from "@/lib/core/holidays";
+import { dayAuspice } from "@/lib/core/hoangdao";
 import { type LunarDate, leapMonthOfYear, lunarMonthName, lunarToSolar, solarToLunar } from "@/lib/core/lunar";
 import { solarTermOf } from "@/lib/core/solarterms";
 import { MESSAGES } from "@/lib/forms";
@@ -261,6 +262,7 @@ function DayDetail({ info, today, outOfView }: { info: DayInfo; today: CalendarD
   const month = lunar.isLeapMonth ? null : canChiOfLunarMonth(lunar.year, lunar.month);
   const day = canChiOfDay(solar);
   const term = solarTermOf(solar);
+  const auspice = dayAuspice(solar);
   const diff = julianDayNumber(solar) - julianDayNumber(today);
   const rel = diff === 0 ? "Hôm nay" : diff === 1 ? "Ngày mai" : diff === -1 ? "Hôm qua" : diff > 0 ? `${diff} ngày nữa` : `${-diff} ngày trước`;
   return (
@@ -279,7 +281,7 @@ function DayDetail({ info, today, outOfView }: { info: DayInfo; today: CalendarD
         Năm {year.name} (con {zodiacOf(year.branchIndex).toLowerCase()}), tháng {lunar.monthLength === 30 ? "đủ 30 ngày" : "thiếu 29 ngày"}
       </p>
       <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 border-t border-[#2a395680] pt-4 text-sm">
-        <dt className="text-muted-foreground">Ngày</dt>
+        <dt className="text-muted-foreground">Can Chi ngày</dt>
         <dd>{day.name}</dd>
         <dt className="text-muted-foreground">Tháng</dt>
         <dd>{month ? month.name : "Tháng nhuận"}</dd>
@@ -290,7 +292,25 @@ function DayDetail({ info, today, outOfView }: { info: DayInfo; today: CalendarD
           {term.name}
           {term.startsToday ? " (bắt đầu hôm nay)" : ""}
         </dd>
+        <dt className="text-muted-foreground">Loại ngày</dt>
+        <dd className={auspice.dayGod.hoangDao ? "text-[#f1e3bf]" : undefined}>
+          {auspice.dayGod.hoangDao ? "Hoàng đạo" : "Hắc đạo"} ({auspice.dayGod.name})
+        </dd>
+        <dt className="text-muted-foreground">Tuổi xung</dt>
+        <dd>
+          {auspice.clashZodiac} ({auspice.clashBranch})
+        </dd>
       </dl>
+      <div className="mt-4 border-t border-[#2a395680] pt-4">
+        <p className="text-sm text-muted-foreground">Giờ hoàng đạo</p>
+        <ul className="mt-1.5 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+          {auspice.goodHours.map((h) => (
+            <li key={h.branch}>
+              {h.name} <span className="text-muted-foreground">({h.range})</span>
+            </li>
+          ))}
+        </ul>
+      </div>
       {info.holidays.length > 0 && (
         <ul className="mt-4 grid gap-1.5">
           {info.holidays.map((h) => (

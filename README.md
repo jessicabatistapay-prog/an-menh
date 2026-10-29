@@ -13,16 +13,24 @@ Web app tiếng Việt tra cứu bản mệnh, ngũ hành, phong thủy Bát tr�
 | Bản mệnh | `/ban-menh` | Năm âm lịch, Can Chi, con giáp, nạp âm, quan hệ sinh khắc, màu tham khảo, cung phi (khi có giới tính) |
 | Phong thủy | `/phong-thuy` | Cung phi, nhóm Đông/Tây tứ mệnh, sao của hướng nhà, trạch của nhà, sơ đồ 8 hướng, gợi ý cho phòng khách/phòng ngủ/góc làm việc |
 | Thần số học | `/than-so-hoc` | Số chủ đạo với từng bước cộng, điểm mạnh, xu hướng cần cân bằng, câu hỏi suy ngẫm, năm cá nhân |
-| Lịch âm dương | `/lich` | Lịch tháng có ngày âm, Can Chi ngày/tháng/năm, 24 tiết khí, ngày lễ; đổi ngày dương ↔ âm |
+| Lịch âm dương | `/lich` | Lịch tháng có ngày âm, Can Chi, 24 tiết khí, ngày lễ, ngày và giờ hoàng đạo, tuổi xung; đổi ngày dương ↔ âm |
+| Gieo quẻ Kinh Dịch | `/gieo-que` | Gieo 3 đồng xu × 6 hào (từng hào hoặc gieo nhanh), quẻ chủ, hào động, quẻ biến, lời giải 64 quẻ |
+| Xin xăm | `/xin-xam` | Lắc ống xăm, 36 quẻ thơ lục bát tự soạn kèm lời bàn công việc, gia đạo, tình duyên |
+| Bói bài Tarot | `/tarot` | 78 lá tự vẽ (SVG), trải 1 hoặc 3 lá, xuôi/ngược, lật thẻ |
+| Tử vi hằng ngày | `/tu-vi-hang-ngay` | Nhịp ngày 12 con giáp theo quan hệ Can Chi ngày – tuổi, giờ gợi ý, màu hợp |
+| Lá số tử vi | `/la-so` | 12 cung, 14 chính tinh, 10 phụ tinh, Tứ Hóa, Tuần, Triệt, Trường Sinh, đại hạn; xem dạng lưới hoặc danh sách |
 | Xem tuổi | `/hop-tuoi` | Tam hợp, lục hợp, lục xung, lục hại, can hợp, sinh khắc nạp âm, nhóm Bát trạch của hai người – không chấm điểm |
 | Rút thẻ | `/rut-the` | 24 thẻ tự biên soạn, hiệu ứng lật thẻ (tắt khi `prefers-reduced-motion`), lưu vào lịch sử |
 | Hồ sơ | `/ho-so` | Thêm, sửa, xóa hồ sơ; xem lại/xóa từng mục lịch sử; xóa toàn bộ dữ liệu |
 | Kiến thức | `/kien-thuc` | Ngũ hành, Can Chi, nạp âm và cung phi, Bát trạch, thần số học, giới hạn |
 | Phương pháp | `/phuong-phap` | Thuật toán, bảng tra, nguồn, phạm vi và kết quả đối chiếu |
 
-Nhạc nền: tạo trực tiếp bằng Web Audio API theo thang âm ngũ cung (`src/lib/audio/ambient.ts`), không có file nhạc và
-không vướng bản quyền. Mặc định bật, nhưng theo chính sách tự phát của trình duyệt, nhạc chỉ bắt đầu sau lần chạm hoặc
-nhấn phím đầu tiên. Nút ở góc màn hình để bật/tắt; lựa chọn lưu ở khóa `an-menh:nhac`.
+Nhạc nền: bản "Huyền Không" (160 giây, `public/audio/an-menh-nhac-nen.mp3`) được soạn và tổng hợp bằng
+`scripts/music/render.py` (numpy, scipy, ffmpeg): ngũ cung Rê thứ thêm Mi giáng, đàn tranh Karplus–Strong có nhấn/rung,
+pad, chuông FM, trống, cồng, gió; mọi lớp âm và reverb được cộng vòng nên lặp liền mạch. Phát bằng Web Audio
+(`AudioBufferSourceNode.loop`), tải trước khi trình duyệt rảnh; nếu lỗi, dùng nhạc ngũ cung tạo trực tiếp
+(`src/lib/audio/ambient.ts`). Nhạc bắt đầu sau lần chạm/nhấn phím đầu tiên (chính sách tự phát của trình duyệt).
+Render lại: `python3 scripts/music/render.py public/audio/an-menh-nhac-nen.mp3`.
 
 Kết quả đã lưu được mở lại bằng `?muc=<id>`, hồ sơ bằng `?ho-so=<id>`. Đường dẫn chỉ chứa id, không chứa ngày sinh.
 
@@ -144,9 +152,16 @@ k = (năm mod 9 + 4) mod 9; 0 → 9; số 5: nam → Khôn, nữ → Cấn.
 
 **Xem tuổi.** Tam hợp (chi mod 4), lục hợp (tổng ≡ 1 mod 12), lục xung (cách 6), lục hại (tổng ≡ 7 mod 12), can hợp (cách 5).
 
+**Kinh Dịch.** 3 xu/hào (ngửa 3, sấp 2), 64 quẻ thứ tự Văn Vương tra theo quẻ trên/dưới.
+
+**Hoàng đạo.** 12 thần trực, Thanh Long khởi theo "Dần Thân gia Tý, Mão Dậu Dần…": ngày theo chi tháng âm lịch, giờ theo chi ngày.
+
+**Lá số tử vi.** Mệnh = Dần + (tháng − 1) − giờ; Thân = Dần + (tháng − 1) + giờ; Can cung theo Ngũ Hổ Độn; Cục theo nạp âm cung Mệnh;
+Tử Vi theo ngày và cục; các sao khác theo bảng chuẩn. Tháng nhuận tính như tháng chính; Tứ Hóa năm Nhâm: Thiên Phủ hóa Khoa.
+
 **Năm cá nhân.** Cộng chữ số DD MM + năm đang xét, rút gọn về 1–9 (không giữ 11/22/33).
 
-**Lưu trữ.** Khóa `an-menh:data`, lược đồ phiên bản 2 (tự chuyển từ phiên bản 1) kiểm tra bằng Zod. JSON hỏng → sao lưu sang `an-menh:data:hong`
+**Lưu trữ.** Khóa `an-menh:data`, lược đồ phiên bản 3 (tự chuyển từ phiên bản 1, 2) kiểm tra bằng Zod. JSON hỏng → sao lưu sang `an-menh:data:hong`
 rồi khởi tạo lại; mục lỗi bị bỏ qua từng mục; dữ liệu phiên bản mới hơn chỉ đọc, không ghi đè; LocalStorage bị chặn →
 vẫn xem được kết quả, nút lưu báo lỗi rõ ràng. Chỉ lưu khi người dùng chọn lưu, và chỉ lưu đầu vào (kết quả được tính lại).
 
@@ -165,6 +180,11 @@ vẫn xem được kết quả, nút lưu báo lỗi rõ ràng. Chỉ lưu khi n
 - Đổi âm ↔ dương khớp ngược trên mọi ngày 1900–2100; ngày âm không tồn tại bị từ chối; tháng nhuận 2020/2023/2025.
 - Tiết khí: các mốc Xuân phân, Hạ chí, Thu phân, Đông chí, Lập xuân đã biết; mỗi năm 1901–2099 đủ 24 tiết đúng thứ tự,
   Đông chí luôn thuộc tháng 11 âm.
+- Kinh Dịch: đủ 64 quẻ, tính chất cặp Văn Vương, tên quẻ, xác suất gieo 1:3:3:1, quẻ biến.
+- Xăm: 36 quẻ, thơ đúng 6–8 tiếng, vần và thanh bằng ở tiếng thứ 6; Tarot đủ 78 lá.
+- Hoàng đạo theo bài ca an Thanh Long; tử vi hằng ngày có tính xác định.
+- Lá số mẫu đã đối chiếu, mỗi sao xuất hiện đúng một lần, đại hạn liên tục, Tuần/Triệt.
+- Script đối chiếu (`npm run verify:lunar`): giờ hoàng đạo khớp 100% với lunar-javascript 1950–2050; 4.000 lá số khớp hoàn toàn với iztro.
 - Ngày lễ, quan hệ tuổi (mỗi chi đủ 2 tam hợp/1 lục hợp/1 xung/1 hại), năm cá nhân, chuyển dữ liệu v1 → v2.
 
 Kết quả đối chiếu âm lịch (73.384 ngày): khớp `amlich` ở UTC+7 trừ 2 ngày mà `amlich` trả về "ngày 0"
@@ -177,6 +197,6 @@ khi sóc hoặc trung khí rơi sát nửa đêm.
   lịch tính bằng mô hình chính xác hơn.
 - Lịch âm Việt Nam trước 1968 (miền Nam đến 1975) thường dùng UTC+8. App dùng UTC+7 thống nhất và hiển thị lưu ý khi
   hai cách tính khác nhau cho ngày sinh trước 1976.
-- Chưa có: lá số tử vi, chỉ số thần số học theo tên, xem ngày tốt xấu, giờ hoàng đạo, đăng nhập/đồng bộ, la bàn cảm biến.
+- Chưa có: các vòng sao phụ khác của lá số (Khôi Việt, Hỏa Linh, Bác Sĩ, Thái Tuế, lưu niên, độ sáng), lời giải từng hào Kinh Dịch, chỉ số thần số học theo tên, xem ngày cho từng việc cụ thể, đăng nhập/đồng bộ, la bàn cảm biến.
 - Dữ liệu chỉ nằm trên trình duyệt hiện tại; xóa dữ liệu trình duyệt sẽ mất hồ sơ và lịch sử.
 - Diễn giải, thẻ chiêm nghiệm và gợi ý không gian do An Mệnh tự biên soạn.

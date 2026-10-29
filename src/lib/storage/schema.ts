@@ -10,7 +10,7 @@ import { parseISODate } from "@/lib/core/date";
 
 export const STORAGE_KEY = "an-menh:data";
 export const CORRUPT_BACKUP_KEY = "an-menh:data:hong";
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 const isoDate = z.string().refine((v) => parseISODate(v).ok, "Ngày không hợp lệ");
 const gender = z.enum(["nam", "nu"]).nullable();
@@ -59,6 +59,34 @@ export const historyEntrySchema = z.discriminatedUnion("kind", [
     nameB: z.string().max(60),
     birthDateB: isoDate,
     genderB: gender,
+  }),
+  // Thêm từ phiên bản 3
+  z.object({
+    ...base,
+    kind: z.literal("gieo-que"),
+    values: z.string().regex(/^[6-9]{6}$/),
+    question: z.string().max(200),
+  }),
+  z.object({
+    ...base,
+    kind: z.literal("xin-xam"),
+    number: z.number().int().min(1).max(100),
+    question: z.string().max(200),
+  }),
+  z.object({
+    ...base,
+    kind: z.literal("tarot"),
+    spread: z.enum(["1", "3"]),
+    cards: z.array(z.object({ id: z.string().min(1), reversed: z.boolean() })).min(1).max(3),
+    question: z.string().max(200),
+  }),
+  z.object({
+    ...base,
+    kind: z.literal("la-so"),
+    name: z.string().max(60),
+    birthDate: isoDate,
+    hour: z.number().int().min(0).max(11),
+    gender: z.enum(["nam", "nu"]),
   }),
 ]);
 

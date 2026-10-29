@@ -3,10 +3,10 @@
  * - Tài nguyên tĩnh có mã băm (/_next/static, icon, font): ưu tiên bộ nhớ đệm.
  * Không lưu dữ liệu người dùng; hồ sơ và lịch sử nằm trong LocalStorage.
  */
-const VERSION = "an-menh-v2";
+const VERSION = "an-menh-v3";
 const PAGES = `${VERSION}-pages`;
 const ASSETS = `${VERSION}-assets`;
-const PRECACHE = ["/", "/ban-menh", "/phong-thuy", "/rut-the", "/ho-so", "/than-so-hoc", "/kien-thuc", "/phuong-phap", "/lich", "/hop-tuoi"];
+const PRECACHE = ["/", "/ban-menh", "/phong-thuy", "/rut-the", "/ho-so", "/than-so-hoc", "/kien-thuc", "/phuong-phap", "/lich", "/hop-tuoi", "/gieo-que", "/xin-xam", "/tarot", "/tu-vi-hang-ngay", "/la-so"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -50,7 +50,7 @@ self.addEventListener("fetch", (event) => {
   const isStatic =
     url.pathname.startsWith("/_next/static/") ||
     url.pathname.startsWith("/icons/") ||
-    /\.(?:woff2?|png|svg|ico)$/.test(url.pathname);
+    /\.(?:woff2?|png|svg|ico|mp3)$/.test(url.pathname);
   if (isStatic) {
     event.respondWith(
       caches.match(request).then(

@@ -20,7 +20,7 @@ export default function PhuongPhapPage() {
     <div className="mx-auto max-w-3xl">
       <PageHeader
         title="Phương pháp và nguồn tham khảo"
-        description="Mọi kết quả trong An Mệnh được tính bằng mã nguồn xác định chạy ngay trên thiết bị của bạn: cùng đầu vào luôn cho cùng kết quả. Không có phần nào dùng trí tuệ nhân tạo hay số ngẫu nhiên, trừ việc rút thẻ chiêm nghiệm."
+        description="Mọi phép tính trong An Mệnh chạy ngay trên thiết bị của bạn bằng mã nguồn xác định: cùng đầu vào luôn cho cùng kết quả. Không phần nào dùng trí tuệ nhân tạo. Chỉ gieo quẻ, xin xăm, Tarot và rút thẻ dùng số ngẫu nhiên."
       />
 
       <Section title="Âm lịch Việt Nam" id="am-lich">
@@ -146,10 +146,82 @@ export default function PhuongPhapPage() {
 
       <Section title="Nhạc nền" id="nhac-nen">
         <p className="leading-relaxed">
-          Nhạc nền không phải bản thu âm có sẵn: trình duyệt tự tạo âm thanh theo thang âm ngũ cung (năm nốt), với tiếng gảy mô phỏng dây đàn
-          và một nốt nền trầm, nên mỗi lần nghe một khác và không vướng bản quyền. Theo quy định của trình duyệt, nhạc chỉ bắt đầu sau lần chạm
-          hoặc nhấn phím đầu tiên trên trang; nút nhạc ở góc màn hình dùng để bật hoặc tắt, và lựa chọn được ghi nhớ trên trình duyệt này.
+          Bản nhạc “Huyền Không” dài 2 phút 40 giây, được An Mệnh soạn và tổng hợp bằng mã nguồn (scripts/music/render.py), không dùng mẫu âm
+          thanh có sẵn: thang ngũ cung Rê thứ thêm nốt Mi giáng, đàn tranh tổng hợp với kỹ thuật nhấn và rung, pad dây trầm, chuông, trống
+          trầm, cồng và tiếng gió. Bản nhạc được làm để lặp liền mạch. Theo quy định của trình duyệt, nhạc chỉ bắt đầu sau lần chạm hoặc nhấn
+          phím đầu tiên; nút ở góc màn hình để bật, tắt và lựa chọn được ghi nhớ. Nếu không tải được file nhạc, ứng dụng phát nhạc ngũ cung tạo
+          trực tiếp.
         </p>
+      </Section>
+
+      <Section title="Gieo quẻ Kinh Dịch" id="kinh-dich">
+        <dl>
+          <Row label="Cách gieo">
+            Ba đồng xu cho mỗi hào, ngửa tính 3, sấp tính 2: tổng 6 là lão âm (động), 7 thiếu dương, 8 thiếu âm, 9 lão dương (động). Gieo 6
+            lần từ hào sơ (dưới cùng) lên hào thượng. Hào động đổi âm dương để ra quẻ biến. Số ngẫu nhiên lấy từ bộ sinh ngẫu nhiên mật mã của
+            trình duyệt.
+          </Row>
+          <Row label="Bảng quẻ">
+            64 quẻ theo thứ tự Văn Vương, tra theo quẻ trên và quẻ dưới. Kiểm thử xác nhận đủ 64 quẻ không trùng, đúng tính chất cặp của thứ
+            tự Văn Vương (quẻ chẵn là quẻ lẻ lộn ngược, hoặc đảo hào nếu quẻ đối xứng) và tên quẻ ghép đúng quy ước Việt Nam.
+          </Row>
+          <Row label="Lời giải">Do An Mệnh tự diễn giải ngắn gọn từ tinh thần quái từ và đại tượng; chưa có lời giải riêng cho từng hào.</Row>
+        </dl>
+      </Section>
+
+      <Section title="Xin xăm và Tarot" id="xam-tarot">
+        <dl>
+          <Row label="Bộ xăm">
+            36 quẻ do An Mệnh tự soạn, mỗi quẻ một câu thơ lục bát (kiểm thử số tiếng, vần và thanh bằng) cùng lời bàn. Không phải bộ xăm
+            của đền chùa nào, không có quẻ “hạ”.
+          </Row>
+          <Row label="Bộ Tarot">
+            78 lá theo cấu trúc truyền thống (22 Ẩn chính, 4 bộ Gậy, Cốc, Kiếm, Tiền). Hình vẽ tự thiết kế, ý nghĩa xuôi và ngược tóm tắt từ
+            cách đọc phổ biến. Bài được xào bằng thuật toán Fisher–Yates; mỗi lá có 50% khả năng ngược nếu bật lá ngược.
+          </Row>
+        </dl>
+      </Section>
+
+      <Section title="Ngày, giờ hoàng đạo và tử vi hằng ngày" id="hoang-dao">
+        <dl>
+          <Row label="12 thần trực">
+            Thanh Long khởi theo bài ca “Dần Thân gia Tý, Mão Dậu Dần, Thìn Tuất Thìn, Tỵ Hợi Ngọ, Tý Ngọ Thân, Sửu Mùi Tuất”: xét ngày thì
+            theo chi của tháng, xét giờ thì theo chi của ngày. Hoàng đạo gồm Thanh Long, Minh Đường, Kim Quỹ, Kim Đường, Ngọc Đường, Tư Mệnh.
+          </Row>
+          <Row label="Quy ước tháng">
+            Tháng âm lịch (tháng Giêng là Dần, tháng nhuận dùng chung chi với tháng chính). Một số sách dùng tháng theo tiết khí nên có thể
+            khác ở những ngày giáp ranh.
+          </Row>
+          <Row label="Đối chiếu">
+            Giờ hoàng đạo khớp hoàn toàn với thư viện lunar-javascript trên mọi ngày 1950–2050; ngày hoàng đạo khớp hoàn toàn ở những ngày hai
+            cách tính tháng trùng nhau.
+          </Row>
+          <Row label="Tử vi hằng ngày">
+            So chi của ngày với chi của tuổi (cùng chi, tam hợp, lục hợp, lục xung, lục hại), nếu không có quan hệ thì so hành của can ngày
+            với hành của tuổi. Lời gợi ý chọn cố định từ nhóm câu tự soạn theo ngày và tuổi; giờ gợi ý là giờ hoàng đạo hợp với tuổi.
+          </Row>
+        </dl>
+      </Section>
+
+      <Section title="Lá số tử vi" id="la-so">
+        <dl>
+          <Row label="Đã an">
+            Mệnh, Thân, 12 cung, Can cung (Ngũ Hổ Độn), Cục theo nạp âm cung Mệnh, 14 chính tinh, Văn Xương, Văn Khúc, Tả Phù, Hữu Bật, Lộc
+            Tồn, Kình Dương, Đà La, Địa Không, Địa Kiếp, Thiên Mã, Tứ Hóa, Tuần, Triệt, vòng Trường Sinh, Mệnh chủ, Thân chủ, đại hạn.
+          </Row>
+          <Row label="Chưa có">
+            Thiên Khôi, Thiên Việt, Hỏa Tinh, Linh Tinh, vòng Bác Sĩ, vòng Thái Tuế, các sao lưu niên, tiểu hạn và độ sáng của sao – vì các
+            trường phái an những phần này khác nhau.
+          </Row>
+          <Row label="Quy ước">
+            Ngày tháng năm sinh âm lịch theo giờ Việt Nam; tháng nhuận tính như tháng chính; sinh 23h–24h tính giờ Tý của ngày đã nhập; Tứ
+            Hóa năm Nhâm dùng Thiên Phủ hóa Khoa theo sách Việt Nam phổ biến.
+          </Row>
+          <Row label="Đối chiếu">
+            4.000 lá số ngẫu nhiên được so với thư viện mã nguồn mở iztro (MIT): Cục, vị trí 12 cung, Thân, các sao đã an, Tứ Hóa (trừ Hóa
+            Khoa năm Nhâm), vòng Trường Sinh, Mệnh chủ, Thân chủ và đại hạn đều khớp.
+          </Row>
+        </dl>
       </Section>
 
       <Section title="Thẻ chiêm nghiệm" id="the">
@@ -173,7 +245,10 @@ export default function PhuongPhapPage() {
             H. F. Fliegel và T. C. Van Flandern, “A Machine Algorithm for Processing Calendar Dates”, Communications of the ACM, 1968 (công
             thức số ngày Julius).
           </li>
-          <li>Vạn Dân Anh, Tam Mệnh Thông Hội (三命通會), đời Minh – bảng nạp âm.</li>
+          <li>Vạn Dân Anh, Tam Mệnh Thông Hội (三命通會), đời Minh – bảng nạp âm, quan hệ hợp, xung, hại.</li>
+          <li>Kinh Dịch (易經) – thứ tự 64 quẻ Văn Vương, quái từ và đại tượng.</li>
+          <li>Tử Vi Đẩu Số Toàn Thư (紫微斗數全書) – phép an sao tử vi; đối chiếu với thư viện iztro (github.com/SylarLong/iztro, giấy phép MIT).</li>
+          <li>Thư viện lunar-javascript (6tail, giấy phép MIT) – đối chiếu âm lịch UTC+8, ngày và giờ hoàng đạo.</li>
           <li>Bát trạch minh kính (八宅明鏡) – bảng du niên Bát trạch.</li>
         </ul>
       </Section>

@@ -43,11 +43,13 @@ export interface LoadResult {
 
 /**
  * Chuyển đổi từ các phiên bản cũ: MIGRATIONS[n] đổi dữ liệu phiên bản n sang n + 1.
- * 1 → 2: thêm loại lịch sử "hop-tuoi"; dữ liệu cũ giữ nguyên cấu trúc.
+ * 1 → 2: thêm loại lịch sử "hop-tuoi"; 2 → 3: thêm "gieo-que", "xin-xam", "tarot", "la-so".
+ * Dữ liệu cũ giữ nguyên cấu trúc.
  * (Nâng phiên bản để bản app cũ hơn mở dữ liệu mới ở chế độ chỉ đọc, không vô tình xóa mục "hop-tuoi".)
  */
 const MIGRATIONS: Record<number, (input: Record<string, unknown>) => Record<string, unknown>> = {
   1: (input) => ({ ...input, version: 2 }),
+  2: (input) => ({ ...input, version: 3 }),
 };
 
 export function parseStoredData(raw: string | null): LoadResult {

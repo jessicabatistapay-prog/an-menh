@@ -16,6 +16,10 @@ const TOC = [
   ["than-so-hoc", "Thần số học"],
   ["tiet-khi", "Tiết khí"],
   ["quan-he-tuoi", "Quan hệ tuổi"],
+  ["kinh-dich", "Kinh Dịch"],
+  ["hoang-dao", "Hoàng đạo"],
+  ["tu-vi", "Tử Vi Đẩu Số"],
+  ["xam-tarot", "Xăm và Tarot"],
   ["gioi-han", "Giới hạn"],
 ] as const;
 
@@ -134,6 +138,45 @@ export default function KienThucPage() {
           </p>
         </Section>
 
+        <Section title="Kinh Dịch" id="kinh-dich">
+          <p>
+            Kinh Dịch là một trong những văn bản cổ nhất của phương Đông. Từ tám quẻ đơn (Càn, Đoài, Ly, Chấn, Tốn, Khảm, Cấn, Khôn) ghép
+            đôi thành 64 quẻ kép, mỗi quẻ gồm sáu hào âm hoặc dương, đọc từ dưới lên. Khi gieo quẻ, hào “động” (lão âm, lão dương) cho biết
+            chỗ đang chuyển hóa và tạo ra quẻ biến.
+          </p>
+          <p>
+            Người xưa dùng Kinh Dịch như một tấm gương để suy xét tình thế hơn là để biết trước tương lai; An Mệnh giữ tinh thần đó.
+          </p>
+        </Section>
+
+        <Section title="Ngày và giờ hoàng đạo" id="hoang-dao">
+          <p>
+            Lịch cổ gắn mỗi ngày, mỗi giờ với một trong 12 vị thần trực: sáu vị hoàng đạo (Thanh Long, Minh Đường, Kim Quỹ, Kim Đường, Ngọc
+            Đường, Tư Mệnh) và sáu vị hắc đạo. Nhiều người dùng giờ hoàng đạo để chọn lúc khởi sự việc quan trọng. Đây là phong tục, không có
+            cơ sở để cho rằng ngày hắc đạo gây ra điều xấu.
+          </p>
+        </Section>
+
+        <Section title="Tử Vi Đẩu Số" id="tu-vi">
+          <p>
+            Tử Vi Đẩu Số lập lá số 12 cung (Mệnh, Phụ Mẫu, Phúc Đức…) từ năm, tháng, ngày, giờ sinh âm lịch và giới tính, rồi an hơn trăm
+            sao vào các cung. 14 chính tinh như Tử Vi, Thiên Phủ, Thái Dương, Thái Âm được xem là quan trọng nhất; Tứ Hóa (Lộc, Quyền, Khoa,
+            Kỵ) thay đổi theo Can năm sinh.
+          </p>
+          <p>
+            Cách luận lá số khác nhau rất nhiều giữa các trường phái. Lá số trong An Mệnh có phần cơ bản đã được kiểm tra; diễn giải chỉ mô tả
+            xu hướng, không dự đoán sự kiện.
+          </p>
+        </Section>
+
+        <Section title="Xăm và Tarot" id="xam-tarot">
+          <p>
+            Xin xăm là tục lệ ở nhiều đền chùa: người hỏi lắc ống xăm để một que rơi ra, rồi đọc bài thơ ứng với số đó. Tarot là bộ 78 lá
+            bài có nguồn gốc châu Âu, ngày nay thường dùng như công cụ tự chiêm nghiệm. Bộ xăm, bộ thẻ và hình lá Tarot trong An Mệnh đều do
+            ứng dụng tự soạn, tự vẽ.
+          </p>
+        </Section>
+
         <Section title="Giới hạn của các phương pháp" id="gioi-han">
           <ul className="list-disc space-y-2 pl-5 marker:text-primary">
             <li>Đây là các quan niệm văn hóa và hệ thống biểu tượng, không phải kết luận khoa học. Chúng không dự đoán được tương lai.</li>
@@ -142,8 +185,9 @@ export default function KienThucPage() {
               theo cách khác trong thần số học.
             </li>
             <li>Không nên dùng kết quả để quyết định về sức khỏe, tài chính, hôn nhân hay đánh giá người khác.</li>
+            <li>Gieo quẻ, xin xăm, Tarot và rút thẻ dùng số ngẫu nhiên; kết quả khác nhau mỗi lần là điều bình thường.</li>
             <li>
-              Tra cứu theo năm sinh rất khác với lá số tử vi đầy đủ (cần giờ sinh và thuật toán an sao). An Mệnh chưa lập lá số tử vi.
+              Tra cứu theo năm sinh rất khác với lá số tử vi (cần giờ sinh và thuật toán an sao). Lá số của An Mệnh mới có phần cơ bản.
             </li>
           </ul>
         </Section>

@@ -159,7 +159,7 @@ describe("Repository", () => {
 });
 
 describe("Chuyển đổi phiên bản dữ liệu", () => {
-  it("dữ liệu phiên bản 1 được đọc bình thường và ghi lại thành phiên bản 2", () => {
+  it("dữ liệu phiên bản 1 được đọc bình thường và ghi lại theo phiên bản mới nhất", () => {
     const mem = new MemoryStorage();
     mem.setItem(STORAGE_KEY, JSON.stringify({ version: 1, profiles: [validProfile], history: [] }));
     const repo = new Repository(mem);
@@ -177,8 +177,46 @@ describe("Chuyển đổi phiên bản dữ liệu", () => {
       label: "Xem tuổi",
     });
     const stored = JSON.parse(mem.getItem(STORAGE_KEY)!);
-    expect(stored.version).toBe(2);
+    expect(stored.version).toBe(SCHEMA_VERSION);
     expect(stored.history[0].kind).toBe("hop-tuoi");
     expect(stored.profiles).toHaveLength(1);
+  });
+});
+
+describe("Lịch sử các tính năng bói toán", () => {
+  it("lưu và đọc lại gieo quẻ, xin xăm, Tarot, lá số; từ chối dữ liệu sai", () => {
+    const mem = new MemoryStorage();
+    const repo = new Repository(mem);
+    expect(repo.addHistory({ kind: "gieo-que", values: "978677", question: "", profileId: null, label: "Quẻ" }).ok).toBe(true);
+    expect(repo.addHistory({ kind: "xin-xam", number: 12, question: "Công việc", profileId: null, label: "Xăm" }).ok).toBe(true);
+    expect(
+      repo.addHistory({
+        kind: "tarot",
+        spread: "3",
+        cards: [
+          { id: "major-0", reversed: false },
+          { id: "coc-2", reversed: true },
+          { id: "tien-14", reversed: false },
+        ],
+        question: "",
+        profileId: null,
+        label: "Tarot",
+      }).ok,
+    ).toBe(true);
+    expect(repo.addHistory({ kind: "la-so", name: "A", birthDate: "2000-08-16", hour: 2, gender: "nam", profileId: null, label: "Lá số" }).ok).toBe(true);
+    const back = parseStoredData(mem.getItem(STORAGE_KEY));
+    expect(back.status).toBe("ok");
+    expect(back.data.history.map((h) => h.kind)).toEqual(["la-so", "tarot", "xin-xam", "gieo-que"]);
+    expect(() => repo.addHistory({ kind: "gieo-que", values: "123456", question: "", profileId: null, label: "x" })).toThrow();
+    expect(() => repo.addHistory({ kind: "la-so", name: "", birthDate: "2000-01-01", hour: 12, gender: "nam", profileId: null, label: "x" })).toThrow();
+  });
+
+  it("dữ liệu phiên bản 2 được chuyển lên phiên bản mới nhất", () => {
+    const mem = new MemoryStorage();
+    mem.setItem(STORAGE_KEY, JSON.stringify({ version: 2, profiles: [validProfile], history: [] }));
+    const repo = new Repository(mem);
+    expect(repo.getSnapshot().status).toBe("ok");
+    repo.clearHistory();
+    expect(JSON.parse(mem.getItem(STORAGE_KEY)!).version).toBe(SCHEMA_VERSION);
   });
 });

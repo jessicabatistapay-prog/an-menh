@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Music, VolumeX } from "lucide-react";
-import { AmbientMusic, audioSupported } from "@/lib/audio/ambient";
+import { audioSupported } from "@/lib/audio/ambient";
+import { LoopPlayer, prefetchMusic } from "@/lib/audio/loop-player";
 import { cn } from "@/lib/utils";
 
 const PREF_KEY = "an-menh:nhac";
 
 type Pref = "on" | "off";
-type Status = "off" | "waiting" | "playing" | "unsupported";
+type Status = "off" | "waiting" | "loading" | "playing" | "unsupported";
 
 function readPref(): Pref {
   try {
@@ -31,7 +32,7 @@ function writePref(p: Pref) {
  * tương tác, nhạc bắt đầu ở lần chạm, bấm hoặc nhấn phím đầu tiên trên trang.
  */
 export function MusicToggle() {
-  const engine = useRef<AmbientMusic | null>(null);
+  const engine = useRef<LoopPlayer | null>(null);
   const [status, setStatus] = useState<Status>("off");
   const [hint, setHint] = useState(false);
 
@@ -42,8 +43,15 @@ export function MusicToggle() {
       setStatus("unsupported");
       return;
     }
-    engine.current = new AmbientMusic();
-    setStatus(readPref() === "on" ? "waiting" : "off");
+    engine.current = new LoopPlayer();
+    const on = readPref() === "on";
+    setStatus(on ? "waiting" : "off");
+    if (!on) return;
+    // Tải trước bản nhạc khi trình duyệt rảnh để lần chạm đầu tiên phát gần như ngay lập tức.
+    const w = window as unknown as { requestIdleCallback?: (cb: () => void) => number };
+    const run = () => prefetchMusic().catch(() => undefined);
+    if (w.requestIdleCallback) w.requestIdleCallback(run);
+    else window.setTimeout(run, 2000);
   }, []);
 
   // Chờ thao tác đầu tiên của người dùng để bắt đầu phát.
@@ -54,6 +62,7 @@ export function MusicToggle() {
     const onGesture = (e: Event) => {
       const target = e.target as Element | null;
       if (target?.closest?.("[data-music-toggle]")) return; // nút nhạc tự xử lý
+      setStatus("loading");
       engine.current?.start().then((ok) => setStatus(ok ? "playing" : "waiting"));
     };
     const opts = { capture: true } as const;
@@ -90,12 +99,19 @@ export function MusicToggle() {
       setStatus("off");
     } else {
       writePref("on");
+      setStatus("loading");
       engine.current?.start().then((ok) => setStatus(ok ? "playing" : "waiting"));
     }
   };
 
   const playing = status === "playing";
-  const label = playing ? "Tắt nhạc nền" : status === "waiting" ? "Bật nhạc nền (nhạc sẽ phát khi bạn chạm vào trang)" : "Bật nhạc nền";
+  const label = playing
+    ? "Tắt nhạc nền"
+    : status === "loading"
+      ? "Đang tải nhạc nền"
+      : status === "waiting"
+        ? "Bật nhạc nền (nhạc sẽ phát khi bạn chạm vào trang)"
+        : "Bật nhạc nền";
 
   return (
     <div className="fixed right-4 z-40 flex items-center gap-2 bottom-[calc(env(safe-area-inset-bottom)+4.75rem)] md:bottom-6 md:right-6">
@@ -104,7 +120,7 @@ export function MusicToggle() {
           role="status"
           className="max-w-[12rem] rounded-xl border border-[#d9c38f40] bg-[#16233d] px-3 py-2 text-xs leading-snug text-foreground shadow-xl animate-in fade-in-0"
         >
-          Chạm vào trang để nghe nhạc nền ngũ cung
+          Chạm vào trang để nghe nhạc nền “Huyền Không”
         </p>
       )}
       <button
@@ -119,7 +135,15 @@ export function MusicToggle() {
           playing ? "border-[#d9c38f80] text-primary" : "border-[#2a3956] text-muted-foreground hover:text-foreground",
         )}
       >
-        {playing ? <EqualizerIcon /> : status === "waiting" ? <Music className="size-[1.1rem]" aria-hidden /> : <VolumeX className="size-[1.1rem]" aria-hidden />}
+        {playing ? (
+          <EqualizerIcon />
+        ) : status === "loading" ? (
+          <Music className="size-[1.1rem] animate-pulse" aria-hidden />
+        ) : status === "waiting" ? (
+          <Music className="size-[1.1rem]" aria-hidden />
+        ) : (
+          <VolumeX className="size-[1.1rem]" aria-hidden />
+        )}
       </button>
     </div>
   );

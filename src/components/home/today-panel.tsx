@@ -8,6 +8,7 @@ import { fromJulianDayNumber, julianDayNumber, isWithinSupportedRange } from "@/
 import { holidaysOf } from "@/lib/core/holidays";
 import { lunarMonthName, solarToLunar } from "@/lib/core/lunar";
 import { solarTermOf } from "@/lib/core/solarterms";
+import { dayAuspice } from "@/lib/core/hoangdao";
 
 // Ngày hiện tại chỉ đọc trên trình duyệt; cập nhật mỗi phút để qua nửa đêm vẫn đúng.
 let cached: { key: string; value: CalendarDate } | null = null;
@@ -41,6 +42,7 @@ export function TodayPanel() {
   const day = canChiOfDay(today);
   const term = solarTermOf(today);
   const upcoming = upcomingEvents(today, 3);
+  const auspice = dayAuspice(today);
 
   return (
     <section aria-labelledby="hom-nay" className="rounded-2xl border border-border bg-[#15213acc] p-5 md:p-6">
@@ -73,6 +75,12 @@ export function TodayPanel() {
           {term.name}
           {term.startsToday ? " (bắt đầu hôm nay)" : ""}
         </dd>
+        <dt className="text-muted-foreground">Loại ngày</dt>
+        <dd>
+          {auspice.dayGod.hoangDao ? "Hoàng đạo" : "Hắc đạo"} ({auspice.dayGod.name})
+        </dd>
+        <dt className="text-muted-foreground">Giờ hoàng đạo</dt>
+        <dd>{auspice.goodHours.map((h) => h.name).join(", ")}</dd>
       </dl>
       {upcoming.length > 0 && (
         <div className="mt-4 border-t border-[#2a395680] pt-4">
@@ -89,9 +97,14 @@ export function TodayPanel() {
           </ul>
         </div>
       )}
-      <Link href="/lich" className="mt-4 inline-block text-sm text-primary underline-offset-4 hover:underline">
-        Mở lịch âm dương
-      </Link>
+      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+        <Link href="/lich" className="text-primary underline-offset-4 hover:underline">
+          Mở lịch âm dương
+        </Link>
+        <Link href="/tu-vi-hang-ngay" className="text-primary underline-offset-4 hover:underline">
+          Xem tử vi hôm nay
+        </Link>
+      </div>
     </section>
   );
 }

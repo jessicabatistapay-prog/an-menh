@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Compass, Hash, Pencil, Plus, Sparkles, Trash2 } from "lucide-react";
+import { Compass, Grid3x3, Hash, Pencil, Plus, Sparkles, Trash2 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -162,6 +162,9 @@ export function HoSoClient() {
                     <Link href={`/than-so-hoc?${q}`} className={buttonVariants({ size: "sm", variant: "secondary" })}>
                       <Hash aria-hidden /> Thần số học
                     </Link>
+                    <Link href={`/la-so?${q}`} className={buttonVariants({ size: "sm", variant: "secondary" })}>
+                      <Grid3x3 aria-hidden /> Lá số
+                    </Link>
                   </div>
                 </li>
               );
@@ -178,7 +181,7 @@ export function HoSoClient() {
         ) : (
           <>
             <div role="group" aria-label="Lọc lịch sử" className="mb-4 flex flex-wrap gap-2">
-              {(["all", "ban-menh", "phong-thuy", "than-so", "rut-the", "hop-tuoi"] as const)
+              {(["all", "ban-menh", "phong-thuy", "than-so", "la-so", "hop-tuoi", "gieo-que", "xin-xam", "tarot", "rut-the"] as const)
                 .filter((k) => k === "all" || kindsPresent.has(k))
                 .map((k) => (
                   <button
