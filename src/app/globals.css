@@ -91,6 +91,10 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
+  /* Ẩn mọi iframe trên trang (ví dụ khung nhúng do bên thứ ba chèn vào). */
+  iframe {
+    display: none !important;
+  }
   ::selection {
     background: #d9c38f55;
   }
