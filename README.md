@@ -56,13 +56,39 @@ XCHECK_DIR=/tmp/xcheck npm run verify:lunar
 
 ## Triển khai
 
-Ứng dụng là Next.js tiêu chuẩn, mọi trang được prerender tĩnh:
+Mọi trang được prerender tĩnh; không cần biến môi trường hay khóa API.
+
+### Netlify
+
+Dự án đã có sẵn `netlify.toml` (lệnh build, Node 22). Netlify tự nhận diện Next.js và dùng adapter OpenNext
+(`@netlify/plugin-nextjs`), không cần cài thêm gì.
+
+**Cách 1 – qua GitHub (khuyên dùng, tự triển khai lại mỗi lần push):**
+
+1. Đưa mã nguồn lên một repository GitHub/GitLab/Bitbucket.
+2. Trên app.netlify.com chọn *Add new project → Import an existing project*, chọn repository.
+3. Giữ nguyên cấu hình Netlify tự điền (lệnh build `npm run build`) rồi bấm *Deploy*.
+
+**Cách 2 – bằng Netlify CLI từ máy của bạn:**
+
+```bash
+npm install -g netlify-cli
+netlify login
+netlify init        # tạo project mới hoặc liên kết project có sẵn
+netlify deploy --build          # bản xem thử (Draft URL)
+netlify deploy --build --prod   # bản chính thức
+```
+
+Kiểm tra build theo đúng môi trường Netlify trên máy: `netlify build --offline`.
+
+Lưu ý: không dùng kiểu kéo thả thư mục lên Netlify Drop – cách đó chỉ phục vụ file tĩnh, không chạy adapter Next.js.
+
+### Vercel hoặc máy chủ Node
 
 - **Vercel**: import repository, giữ cấu hình mặc định.
 - **Máy chủ Node riêng**: `npm ci && npm run build && npm start` (cổng qua biến `PORT`), đặt sau HTTPS.
-  Service worker và chức năng cài đặt PWA chỉ hoạt động qua HTTPS (hoặc `localhost`).
 
-Không cần biến môi trường hay khóa API.
+Service worker và chức năng cài đặt PWA chỉ hoạt động qua HTTPS (hoặc `localhost`).
 
 ## Cấu trúc
 

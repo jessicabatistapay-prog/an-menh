@@ -1,0 +1,11 @@
+# Cấu hình triển khai Netlify.
+# Netlify tự nhận diện Next.js và dùng adapter OpenNext (@netlify/plugin-nextjs),
+# nên không cần khai báo plugin hay thư mục publish.
+
+[build]
+  command = "npm run build"
+
+[build.environment]
+  # Next.js 16 cần Node.js 20.9 trở lên.
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
